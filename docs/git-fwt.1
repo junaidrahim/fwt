@@ -1,0 +1,89 @@
+.TH GIT-FWT 1 "September 2026" "fwt 0.1.0" "User Commands"
+.SH NAME
+git-fwt \- fast sparse worktrees for large Bazel monorepos
+.SH SYNOPSIS
+.B fwt
+.I command
+.RI [ options ]
+.br
+.B git fwt
+.I command
+.RI [ options ]
+.SH DESCRIPTION
+.B fwt
+creates sparse Git worktrees without materializing an entire large repository.
+It also manages full worktrees, macOS APFS copy-on-write clones, structured cone
+profiles, and the local checkout registry.
+.SH COMMANDS
+.TP
+.BI "fwt new " branch
+Create a sparse worktree using FWT_CONE_DEFAULT (or the default profile).
+.TP
+.BI "fwt new " branch " --cone " name
+Create a sparse worktree using the named cone profile.
+.TP
+.BI "fwt new " branch " --full"
+Create a normal full Git worktree.
+.TP
+.BI "fwt new " branch " --cow"
+Create a full copy-on-write clone. This requires macOS, APFS, and source and
+destination paths on the same volume.
+.TP
+.B "fwt ls [--json]"
+List real Git worktrees and registered or discovered COW clones in one view.
+.TP
+.BI "fwt cd " branch
+Print the checkout path. When the supplied shell shim is loaded, change the
+parent shell to that path.
+.TP
+.BI "fwt rm " branch
+Remove a linked worktree or move a COW clone to the user's Trash.
+.TP
+.B "fwt cone ls [--json]"
+List cone profiles with their size, provenance, and staleness state.
+.TP
+.BI "fwt cone set " name " [--description " text "] " dir ...
+Write a manual YAML cone profile.
+.TP
+.BI "fwt cone derive " name " " bazel-target " [--description " text "]"
+Run a Bazel query from the full checkout and write a derived YAML cone profile.
+.TP
+.B "fwt tune"
+Apply the documented Git settings, rewrite the index as version 4, write the
+commit graph, and start incremental maintenance.
+.TP
+.B "fwt skill install --agent claude-code"
+Install or refresh the coding-agent skill embedded in this version of fwt.
+.SH ENVIRONMENT
+.TP
+.B FWT_BASE
+Checkout directory. Default: ~/fivetran/worktrees.
+.TP
+.B FWT_CONE_DIR
+Repository-keyed cone directory. Default: ~/.config/fivetran-cones.
+.TP
+.B FWT_CONE_DEFAULT
+Default cone profile name. Default: default.
+.TP
+.B FWT_SEED
+Whitespace-, comma-, or colon-separated relative paths copied from the main
+checkout into a fresh worktree.
+.SH FILES
+.TP
+.I ~/.config/fivetran-cones/<repo>/<profile>.yaml
+Structured cone profiles. Legacy extensionless flat profiles are migrated on
+first read.
+.TP
+.I ~/.config/fwt/clones.json
+Locked, atomically updated COW clone registry.
+.TP
+.I ~/.claude/skills/fwt/SKILL.md
+Claude Code skill written by
+.BR "fwt skill install" .
+.SH EXIT STATUS
+0 for success, 1 for usage, validation, configuration, or local I/O errors,
+and 2 when an underlying Git or Bazel operation fails.
+.SH SEE ALSO
+.BR git-worktree (1),
+.BR git-sparse-checkout (1),
+.BR bazel (1)

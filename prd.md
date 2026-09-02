@@ -2,13 +2,12 @@
 
 Status: draft
 Owner: Junaid Rahim
-Related: `FIVETRAN-WORKTREES.md` (current implementation), `~/.claude/skills/fivetran-worktrees/SKILL.md` (agent-facing skill wrapping the same functions — superseded by §6.7)
 
 ## 1. Summary
 
-`~/.config/fivetran-worktrees.zsh` is a working set of zsh functions
+The original prototype is a working set of zsh functions
 (`fwta`, `fwtcow`, `fwt`, `fwtrm`, `fwt-cone`, `fwt-cones`, `fwt-tune`) that make
-sparse git worktrees in the `engineering` monorepo (177k files, 12G) in ~2
+sparse git worktrees in a large monorepo (177k files, 12G) in ~2
 seconds instead of the ~2m12s a plain `git worktree add` costs. It works and is
 in daily use by both Junaid and coding agents running in parallel.
 
@@ -17,12 +16,8 @@ This PRD proposes turning it into `fwt`, a single compiled Rust CLI with a
 discoverability/error-handling polish that it can be handed to other
 engineers and to agents without a walkthrough.
 
-**Naming.** `fwt` stands for *fast worktrees*, not "Fivetran worktrees" — the
-value proposition is making worktree creation fast in any large
-bazel-managed monorepo, not something Fivetran-specific. The concrete driving
-use case today is still Fivetran's `engineering` repo, and nothing in v0's
-scope requires generalizing beyond it (see §4 Non-goals), but the name is
-chosen so that doesn't have to change if/when it does.
+**Naming.** `fwt` stands for *fast worktrees*. The value proposition is making
+worktree creation fast in any large bazel-managed monorepo.
 
 ## 2. Problem
 
@@ -36,8 +31,8 @@ The shell version works but has accumulated rough edges that are natural for
 - **Cones are untyped text files.** A cone profile is a bare newline-delimited
   list of directories. There's no way to tell, from the file itself, whether
   it was hand-picked or `bazel query`-derived, when it was last regenerated,
-  or what it's for. `fivetran_ai` (25 dirs, direct-deps-only, hand-derived) and
-  `fivetran_ai_only` (1 dir, won't bazel-build) are indistinguishable by
+  or what it's for. `service_build` (25 dirs, direct-deps-only, hand-derived) and
+  `service_edit` (1 dir, won't bazel-build) are indistinguishable by
   format — you have to remember which is which.
 - **Two sources of truth for "what worktrees exist."** Real worktrees show up
   in `git worktree list`; `fwtcow` clones are independent repos that only show
@@ -52,13 +47,13 @@ The shell version works but has accumulated rough edges that are natural for
   incident already documented in troubleshooting. This is inherent to "logic
   lives in a sourced shell file," not a one-off.
 - **No structured errors or exit codes for agents to act on.** Coding agents
-  (Claude Code, others) drive this today via the `fivetran-worktrees` skill,
+  (Claude Code, others) drive this today via a hand-maintained worktree skill,
   parsing human-oriented `print -u2` messages. A real CLI with consistent
   exit codes and machine-parseable output (at least `--json` on the read
   commands) would make agent-driven use more reliable than string-matching
   stderr.
 - **Not shareable.** It's one person's dotfiles. Other engineers on
-  bazel-heavy repos at Fivetran/dbt Labs would plausibly want this, but
+  bazel-heavy repos would plausibly want this, but
   "source this zsh file, mkdir a cone directory by hand, hope your aliases
   don't shadow a reserved word" is not a distributable install path.
 
@@ -68,7 +63,7 @@ The shell version works but has accumulated rough edges that are natural for
    (`fwt new <branch>`) or as a git subcommand (`git fwt new <branch>`).
 2. Preserve every current invariant and performance number — this is a
    rewrite of the interface, not the underlying git mechanics. No regression
-   on the ~2s / ~880MB sparse-worktree numbers in `FIVETRAN-WORKTREES.md`.
+   on the established ~2s / ~880MB sparse-worktree baseline.
 3. Structured, self-describing cone config (name, directories, provenance,
    bazel target if derived, last-derived timestamp).
 4. A single source of truth for "what worktrees/clones exist" (`fwt ls` reads
@@ -77,10 +72,9 @@ The shell version works but has accumulated rough edges that are natural for
 5. Consistent `--help`, exit codes, and a `--json` output mode on read
    commands, so the existing Claude Code skill (and any other agent) can
    drive it without scraping human-formatted text.
-6. Config and cone directories stay backward-compatible in *location*
-   (`~/.config/fivetran-cones/<repo>/...`, `~/fivetran/worktrees`) so existing
-   muscle memory and paths don't move, even though the file format inside
-   changes.
+6. Config and worktree directories use generic locations
+   (`~/.config/fwt/cones/<repo>/...`, `~/worktrees`) and remain overridable
+   through environment variables.
 
 ## 4. Non-goals
 
@@ -100,12 +94,12 @@ The shell version works but has accumulated rough edges that are natural for
 
 - **Junaid**, daily driver, currently the only user.
 - **Coding agents** (Claude Code sessions) running parallel work in the
-  monorepo, currently going through the `fivetran-worktrees` skill, which
+  monorepo, currently going through a hand-maintained worktree skill, which
   shells out to the same zsh functions this PRD replaces.
-- **Other engineers** on bazel monorepos at Fivetran/dbt Labs, as a stretch
+- **Other engineers** on bazel monorepos, as a stretch
   goal once the tool is generalized past hardcoded assumptions (e.g. cone
-  directory keyed by repo basename already generalizes; anything that
-  currently assumes `engineering` specifically would need auditing).
+  directory keyed by repo basename already generalizes; any repository-specific
+  assumptions would need auditing).
 
 ## 6. Proposed design
 
@@ -143,17 +137,17 @@ reconcile them."
 
 ### 6.4 Cone config format
 
-Move from bare directory lists to YAML, one file per profile, same directory
-layout (`~/.config/fivetran-cones/<repo>/<profile>.yaml`):
+Move from bare directory lists to YAML, one file per profile, using the generic
+layout (`~/.config/fwt/cones/<repo>/<profile>.yaml`):
 
 ```yaml
-name: fivetran_ai
-description: direct deps of fivetran_ai, hand-derived from BUILD file // labels
+name: service_build
+description: direct deps of service, hand-derived from BUILD file // labels
 source: manual        # manual | bazel
 bazel_target: null    # set when source: bazel
 derived_at: null       # timestamp, set when source: bazel
 dirs:
-  - fivetran_ai
+  - service
   - platform/interfaces
   - platform/utils
   - database
@@ -200,8 +194,8 @@ These are correctness-critical today and must not regress in the rewrite:
 
 ### 6.7 Skill bundling
 
-Today the Claude Code skill at `~/.claude/skills/fivetran-worktrees/SKILL.md`
-is a hand-maintained doc that has to be kept in sync with whatever the zsh
+Today the Claude Code integration is a hand-maintained skill that has to be
+kept in sync with whatever the zsh
 functions actually do — it's already drifted in small ways during this PRD
 (the command surface in §6.2 renames everything it documents). Bundling the
 skill with the CLI closes that gap structurally instead of by discipline:
@@ -211,8 +205,7 @@ skill with the CLI closes that gap structurally instead of by discipline:
   the same source tree as the commands it documents and cannot describe a
   command surface the binary doesn't have.
 - `fwt skill install --agent claude-code` writes/overwrites
-  `~/.claude/skills/fwt/SKILL.md` (the skill directory renames from
-  `fivetran-worktrees` to `fwt` along with everything else). Idempotent, and
+  `~/.claude/skills/fwt/SKILL.md`. It is idempotent and
   tagged with a `generated_by: fwt <version>` marker so a stale copy is
   detectable and a hand-edited copy is a caveat, not a supported workflow —
   edit the template in the `fwt` source tree and reinstall.
@@ -231,17 +224,15 @@ skill with the CLI closes that gap structurally instead of by discipline:
 
 - Write a one-time migration (`fwt cone migrate`, or just run automatically
   the first time an old-format flat file is read) that converts existing
-  `~/.config/fivetran-cones/engineering/*` flat files into the new YAML
-  format, filling `source: manual` since none of the existing hand-edited
-  ones carry provenance today. `fivetran_ai_only` and `fivetran_ai` both
-  migrate this way.
-- `$FWT_BASE`, `$FWT_CONE_DIR`, `$FWT_CONE_DEFAULT`, `$FWT_SEED` env vars keep
-  the same names and defaults.
+  `~/.config/fwt/cones/<repo>/*` flat files into the new YAML format, filling
+  `source: manual` since old hand-edited profiles do not carry provenance.
+- `$FWT_BASE`, `$FWT_CONE_DIR`, `$FWT_CONE_DEFAULT`, `$FWT_SEED` remain the
+  supported environment-variable overrides.
 - Old zsh functions stay installed but unused during rollout, so nothing
   breaks mid-migration; remove them from `~/.zshrc` once the binary is
   confirmed stable.
-- Retire the hand-maintained `~/.claude/skills/fivetran-worktrees/SKILL.md`
-  once `fwt skill install` (§6.7) ships — it's replaced wholesale by the
+- Retire the hand-maintained predecessor skill once `fwt skill install`
+  (§6.7) ships — it is replaced wholesale by the
   embedded, versioned skill doc rather than updated in place. Until v0 ships,
   the old skill keeps pointing at the zsh functions.
 
@@ -270,13 +261,13 @@ skill with the CLI closes that gap structurally instead of by discipline:
    bazel-derived cones whose target's BUILD files changed since
    `derived_at`; revisit the earlier "generate a cone from a task
    description" idea on top of this once provenance tracking exists.
-4. **v3 (stretch) — distribution beyond Junaid.** Generalize any
-   `engineering`-specific assumptions, write install docs, offer to
-   teammates on other bazel monorepos.
+4. **v3 (stretch) — broader distribution.** Generalize any remaining
+   repository-specific assumptions, write install docs, and offer it to
+   teams using other bazel monorepos.
 
 ## 10. Success metrics
 
-- Zero regressions in the measured numbers in `FIVETRAN-WORKTREES.md` table.
+- Zero regressions against the established sparse-worktree performance baseline.
 - The alias-shadowing class of failure becomes structurally impossible (no
   logic left in sourced shell files to break).
 - `fwt ls` never again requires mentally reconciling two separate listings.
@@ -303,4 +294,3 @@ skill with the CLI closes that gap structurally instead of by discipline:
 - Where does this binary get built/distributed if it goes beyond Junaid —
   Homebrew tap, internal artifact registry, or `cargo install` from a git
   URL? Deferred to the v3 milestone; not blocking v0.
-

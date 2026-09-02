@@ -1,9 +1,8 @@
 # fwt — fast worktrees
 
 `fwt` creates sparse Git worktrees for very large Bazel monorepos without
-materializing the whole repository. It is a compiled replacement for the zsh
-functions documented in [`fivetran-worktrees.md`](fivetran-worktrees.md), and
-implements the interface in [`prd.md`](prd.md).
+materializing the whole repository. It implements the interface in
+[`prd.md`](prd.md) as a compiled CLI instead of a sourced shell script.
 
 ## Install
 
@@ -36,12 +35,11 @@ and a full checkout.
 
 ## Configure a cone
 
-Cone files live at the backward-compatible path
-`~/.config/fivetran-cones/<repo>/<name>.yaml`:
+Cone files live at `~/.config/fwt/cones/<repo>/<name>.yaml`:
 
 ```sh
-fwt cone set edit-only fivetran_ai
-fwt cone derive buildable //fivetran_ai/...
+fwt cone set edit-only service
+fwt cone derive buildable //service/...
 fwt cone ls
 ```
 
@@ -66,9 +64,9 @@ fwt rm feature/my-change
 Existing local branches are checked out. A branch found on exactly one remote
 tracks that remote; otherwise it is created from the current `HEAD`.
 
-Paths remain configurable through `FWT_BASE` (default
-`~/fivetran/worktrees`), `FWT_CONE_DIR` (default
-`~/.config/fivetran-cones`), `FWT_CONE_DEFAULT` (default `default`), and
+Paths remain configurable through `FWT_BASE` (default `~/worktrees`),
+`FWT_CONE_DIR` (default `~/.config/fwt/cones`), `FWT_CONE_DEFAULT` (default
+`default`), and
 `FWT_SEED` (whitespace-, comma-, or colon-separated relative paths).
 
 `fwt ls` reconciles Git's real worktree list with

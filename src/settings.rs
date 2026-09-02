@@ -24,8 +24,8 @@ impl Settings {
             .map(PathBuf::from)
             .ok_or_else(|| FwtError::Validation("HOME is not set".to_owned()))?;
 
-        let base = env_path("FWT_BASE", &home.join("fivetran/worktrees"), &home);
-        let cone_dir = env_path("FWT_CONE_DIR", &home.join(".config/fivetran-cones"), &home);
+        let base = env_path("FWT_BASE", &home.join("worktrees"), &home);
+        let cone_dir = env_path("FWT_CONE_DIR", &home.join(".config/fwt/cones"), &home);
         let default_cone = env::var("FWT_CONE_DEFAULT")
             .ok()
             .filter(|value| !value.trim().is_empty())

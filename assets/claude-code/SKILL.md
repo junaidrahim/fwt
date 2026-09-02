@@ -7,8 +7,7 @@ generated_by: fwt {{FWT_VERSION}}
 # Fast worktrees (`fwt`)
 
 Use `fwt` when a task needs an isolated checkout in a large Bazel monorepo.
-The repository must have cone profiles under
-`~/.config/fivetran-cones/<repo>/`.
+The repository must have cone profiles under `~/.config/fwt/cones/<repo>/`.
 
 ## Choose a checkout
 
@@ -56,4 +55,3 @@ underlying Git or Bazel operation failed.
   `.claude`, `.bazelbsp`, `.npmrc`, and `.vscode`).
 - Each worktree gets a separate Bazel server/output base; action caches may
   still be shared.
-

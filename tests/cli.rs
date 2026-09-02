@@ -21,7 +21,7 @@ impl Fixture {
     fn new() -> Self {
         let temp = tempfile::tempdir().unwrap();
         let home = temp.path().join("home");
-        let repo = temp.path().join("engineering");
+        let repo = temp.path().join("monorepo");
         let base = temp.path().join("worktrees");
         let cones = temp.path().join("cones");
         let global_git_config = temp.path().join("gitconfig");
@@ -73,7 +73,7 @@ impl Fixture {
     }
 
     fn target(&self, branch: &str) -> PathBuf {
-        self.base.join(format!("engineering@{branch}"))
+        self.base.join(format!("monorepo@{branch}"))
     }
 }
 
@@ -153,7 +153,7 @@ fn sparse_new_preserves_order_invariants_and_seeds_local_state() {
 #[test]
 fn legacy_cones_migrate_to_self_describing_yaml_on_read() {
     let fixture = Fixture::new();
-    let repo_cones = fixture.cones.join("engineering");
+    let repo_cones = fixture.cones.join("monorepo");
     fs::create_dir_all(&repo_cones).unwrap();
     let legacy = repo_cones.join("legacy");
     fs::write(&legacy, "app\nother\n").unwrap();
@@ -199,6 +199,40 @@ fn new_uses_fwt_cone_default_when_no_cone_flag_is_given() {
 }
 
 #[test]
+fn default_storage_paths_are_generic() {
+    let fixture = Fixture::new();
+    fixture
+        .command()
+        .env_remove("FWT_BASE")
+        .env_remove("FWT_CONE_DIR")
+        .env_remove("FWT_CONE_DEFAULT")
+        .args(["cone", "set", "default", "app"])
+        .assert()
+        .success();
+    assert!(
+        fixture
+            .home
+            .join(".config/fwt/cones/monorepo/default.yaml")
+            .is_file()
+    );
+
+    fixture
+        .command()
+        .env_remove("FWT_BASE")
+        .env_remove("FWT_CONE_DIR")
+        .env_remove("FWT_CONE_DEFAULT")
+        .args(["new", "generic-defaults"])
+        .assert()
+        .success();
+    assert!(
+        fixture
+            .home
+            .join("worktrees/monorepo@generic-defaults/app/code.txt")
+            .is_file()
+    );
+}
+
+#[test]
 fn bazel_derived_cone_records_provenance_and_maps_failures_to_exit_two() {
     let fixture = Fixture::new();
     let bin = fixture.temp.path().join("bin");
@@ -224,7 +258,7 @@ fn bazel_derived_cone_records_provenance_and_maps_failures_to_exit_two() {
         .args(["cone", "derive", "buildable", "//app/..."])
         .assert()
         .success();
-    let yaml = fs::read_to_string(fixture.cones.join("engineering/buildable.yaml")).unwrap();
+    let yaml = fs::read_to_string(fixture.cones.join("monorepo/buildable.yaml")).unwrap();
     assert!(yaml.contains("source: bazel"));
     assert!(yaml.contains("bazel_target: //app/..."));
     assert!(!yaml.contains("derived_at: null"));

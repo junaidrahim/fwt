@@ -57,10 +57,10 @@ Install or refresh the coding-agent skill embedded in this version of fwt.
 .SH ENVIRONMENT
 .TP
 .B FWT_BASE
-Checkout directory. Default: ~/fivetran/worktrees.
+Checkout directory. Default: ~/worktrees.
 .TP
 .B FWT_CONE_DIR
-Repository-keyed cone directory. Default: ~/.config/fivetran-cones.
+Repository-keyed cone directory. Default: ~/.config/fwt/cones.
 .TP
 .B FWT_CONE_DEFAULT
 Default cone profile name. Default: default.
@@ -70,7 +70,7 @@ Whitespace-, comma-, or colon-separated relative paths copied from the main
 checkout into a fresh worktree.
 .SH FILES
 .TP
-.I ~/.config/fivetran-cones/<repo>/<profile>.yaml
+.I ~/.config/fwt/cones/<repo>/<profile>.yaml
 Structured cone profiles. Legacy extensionless flat profiles are migrated on
 first read.
 .TP

@@ -100,7 +100,7 @@ pub struct ConeDeriveArgs {
     /// Profile name
     pub name: String,
 
-    /// Bazel target expression, for example //fivetran_ai/...
+    /// Bazel target expression, for example //service/...
     pub target: String,
 
     /// Description stored with the profile

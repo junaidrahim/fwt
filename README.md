@@ -90,3 +90,19 @@ fwt skill install --agent claude-code
 
 This writes `~/.claude/skills/fwt/SKILL.md` with the binary version in its
 `generated_by` marker.
+
+## Releases
+
+Releases are managed by [release-plz](https://release-plz.dev/). Commits to
+`main` open or update a release PR containing the next version and changelog;
+merging that PR publishes the crate to crates.io and creates the corresponding
+Git tag and GitHub release.
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) so version
+bumps are derived from commit history: `fix:` for compatible fixes, `feat:` for
+compatible features, and `!` or a `BREAKING CHANGE:` footer for incompatible
+changes. While the crate is below 1.0, release-plz follows Cargo's SemVer
+compatibility rules.
+
+The repository must define the `CARGO_REGISTRY_TOKEN` Actions secret and allow
+GitHub Actions to create pull requests.

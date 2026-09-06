@@ -1,0 +1,12 @@
+[workspace]
+# Publish only after the generated release PR is merged.
+release_always = false
+publish = true
+git_tag_enable = true
+git_release_enable = true
+changelog_update = true
+semver_check = true
+
+# Keep pre-1.0 releases aligned with Cargo's compatibility interpretation:
+# features are patch bumps and breaking changes bump the minor version.
+features_always_increment_minor = false

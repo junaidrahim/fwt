@@ -13,25 +13,33 @@ for `fwt cone derive`.
 You need Rust 1.85+ (including Cargo), Git 2.37+, and macOS or Linux. Windows
 is not currently a tested/supported installation target.
 
-From source, including before the first crates.io release:
+Install from crates.io:
 
 ```sh
-git clone https://github.com/junaidrahim/fwt.git
-cd fwt
-cargo install --path . --locked
+cargo install fwt --locked
 fwt --version
 git fwt -h
 ```
 
+The first crates.io release is still pending in
+[release PR #2](https://github.com/junaidrahim/fwt/pull/2). The command above
+will work after that PR is merged and publication succeeds. Until then, or to
+install the latest development version, use:
+
+```sh
+cargo install --git https://github.com/junaidrahim/fwt.git --locked
+```
+
 Cargo installs both `fwt` and `git-fwt` in its bin directory (normally
 `~/.cargo/bin`); put that directory on `PATH`. `git-fwt` gives you `git fwt`
-through Git's external-command discovery. After the first release is published,
-you can install from crates.io with `cargo install fwt --locked`.
+through Git's external-command discovery.
 
 Try a sparse checkout of this repository; no Bazel setup is needed:
 
 ```sh
-# Still inside the fwt checkout. A "cone" is a named list of directories.
+git clone https://github.com/junaidrahim/fwt.git
+cd fwt
+# A "cone" is a named list of directories.
 fwt cone set default src
 fwt new try-fwt
 cd "$(git-fwt resolve try-fwt)"

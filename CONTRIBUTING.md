@@ -37,7 +37,7 @@ cargo +1.85.0 test --locked --all-targets --all-features
 | `src/cone.rs` | YAML profiles, validation, migration, Bazel queries |
 | `src/listing.rs`, `src/registry.rs` | Checkout discovery and clone state |
 | `src/settings.rs`, `src/error.rs` | Environment configuration and diagnostics |
-| `shell/fwt.sh` | Bash/Zsh directory-change function embedded by `shell-init` |
+| `src/shell.rs`, `shell/fwt.sh` | Idempotent Bash/Zsh config setup and embedded directory-change function |
 | `assets/claude-code/SKILL.md` | Agent instructions embedded in the binaries |
 | `tests/cli.rs` | End-to-end tests using real Git repositories |
 

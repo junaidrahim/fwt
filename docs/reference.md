@@ -17,13 +17,27 @@ fwt cone ls [--json]
 fwt cone set <name> [--description <text>] <dir>...
 fwt cone derive <name> <bazel-target-expression> [--description <text>]
 fwt tune
-fwt shell-init
+fwt init [--shell bash|zsh] [--print]
 fwt skill install --agent claude-code
 ```
 
 `resolve` is hidden from the top-level help because it serves shell/automation
-callers; it prints the same path as the unwrapped `cd`. `shell-init` prints
-the Bash/Zsh function and works outside a repository.
+callers; it prints the same path as the unwrapped `cd`.
+
+`init` works outside a repository and appends a marked integration block to
+`~/.bashrc` for Bash or `$ZDOTDIR/.zshrc` for Zsh (`$HOME` when `ZDOTDIR` is
+unset). It detects the configured shell from `$SHELL`; `--shell bash` or
+`--shell zsh` overrides detection. Unsupported shells fail without changing
+files. Existing contents, permissions, and symlinks are preserved. Repeated
+runs leave an existing setup unchanged. To uninstall, remove the marked block.
+
+Open a new interactive shell that reads the config, or enable the integration
+immediately with `eval "$(git-fwt init --print)"`. Bash login shells read their
+login profile instead of `.bashrc`; that profile must source `.bashrc` for
+automatic activation. `init` does not edit login profiles.
+
+`init --print` only prints the embedded Bash/Zsh function and changes no files.
+Neither mode can change the parent shell directly.
 
 Profile names use letters, digits, `.`, `_`, or `-`. Directories are relative
 to the repository root, even if `cone set` runs from a subdirectory. Absolute
@@ -104,7 +118,7 @@ snapshot or undo command in fwt.
 | --- | --- |
 | `fwt: command not found` | Add the installation bin directory to `PATH`; run `git-fwt --version` to confirm which install is visible. |
 | `no cone 'default'` | Run `fwt cone set default <dir>` inside the repository, choose `--cone <name>`, or use `--full`. |
-| `fwt cd` prints a path | Load `eval "$(git-fwt shell-init)"` in Bash/Zsh. `git fwt cd` always prints a path. |
+| `fwt cd` prints a path | Run `fwt init`, then follow its activation instructions. `git fwt cd` always prints a path. |
 | `git help fwt` cannot find a manual | Run the source installer or configure your man search path; `git fwt -h` uses built-in help. |
 | The branch is already checked out | Select it with `fwt cd`, or choose a new branch. Linked worktrees cannot independently check out the same branch. |
 | Existing destination does not match | Inspect the printed path and `fwt ls --json`. Choose a different branch or `FWT_BASE`; fwt will not repurpose that checkout. |

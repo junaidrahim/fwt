@@ -6,6 +6,7 @@ mod git;
 mod listing;
 mod registry;
 mod settings;
+mod shell;
 
 use clap::Parser;
 
@@ -34,9 +35,8 @@ pub fn main_entry() -> i32 {
 }
 
 fn run(cli: Cli) -> Result<()> {
-    if matches!(cli.command, Command::ShellInit) {
-        print!("{}", include_str!("../shell/fwt.sh"));
-        return Ok(());
+    if let Command::Init(args) = &cli.command {
+        return shell::init(args);
     }
     let settings = Settings::from_env()?;
     match cli.command {
@@ -47,7 +47,7 @@ fn run(cli: Cli) -> Result<()> {
         Command::Cone(args) => commands::cone(&settings, args.command),
         Command::Tune => commands::tune(&settings),
         Command::Skill(args) => commands::skill(&settings, args.command),
-        Command::ShellInit => {
+        Command::Init(_) => {
             unreachable!("shell initialization is handled before loading settings")
         }
     }

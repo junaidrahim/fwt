@@ -5,6 +5,7 @@ use std::{
 };
 
 use assert_cmd::prelude::*;
+use predicates::prelude::PredicateBooleanExt;
 use serde_json::Value;
 use tempfile::TempDir;
 
@@ -773,6 +774,168 @@ fn cone_directories_cannot_inject_additional_stdin_lines() {
 }
 
 #[test]
+fn init_appends_once_to_the_detected_shell_config_outside_a_repository() {
+    for (shell, filename) in [("/bin/bash", ".bashrc"), ("/bin/zsh", ".zshrc")] {
+        let temp = tempfile::tempdir().unwrap();
+        let config = temp.path().join(filename);
+        let original = b"# existing config\nexport KEEP_ME=yes";
+        fs::write(&config, original).unwrap();
+        let mut command = Command::cargo_bin("fwt").unwrap();
+        command
+            .current_dir(temp.path())
+            .env("HOME", temp.path())
+            .env("SHELL", shell)
+            .env_remove("ZDOTDIR")
+            .arg("init");
+        command
+            .assert()
+            .success()
+            .stdout(predicates::str::contains("Updated"));
+        let installed = fs::read(&config).unwrap();
+        assert!(installed.starts_with(original));
+        assert!(
+            String::from_utf8_lossy(&installed).contains("\neval \"$(git-fwt init --print)\"\n")
+        );
+        command
+            .assert()
+            .success()
+            .stdout(predicates::str::contains("Already configured"));
+        assert_eq!(installed, fs::read(&config).unwrap());
+        assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 1);
+    }
+}
+
+#[test]
+fn init_supports_shell_override_and_custom_zdotdir() {
+    let temp = tempfile::tempdir().unwrap();
+    let zdotdir = temp.path().join("custom zsh config");
+    Command::cargo_bin("fwt")
+        .unwrap()
+        .current_dir(temp.path())
+        .env("HOME", temp.path())
+        .env("SHELL", "/bin/fish")
+        .env("ZDOTDIR", &zdotdir)
+        .args(["init", "--shell", "zsh"])
+        .assert()
+        .success();
+    assert!(zdotdir.join(".zshrc").is_file());
+    assert!(!temp.path().join(".zshrc").exists());
+    Command::cargo_bin("fwt")
+        .unwrap()
+        .current_dir(temp.path())
+        .env("HOME", temp.path())
+        .env("SHELL", "/bin/zsh")
+        .env("ZDOTDIR", &zdotdir)
+        .args(["init", "--shell", "bash"])
+        .assert()
+        .success();
+    assert!(temp.path().join(".bashrc").is_file());
+    assert!(!zdotdir.join(".bashrc").exists());
+}
+
+#[test]
+fn init_rejects_unsupported_or_missing_shell_without_writing() {
+    let temp = tempfile::tempdir().unwrap();
+    for shell in [Some("/bin/fish"), Some(""), None] {
+        let mut command = Command::cargo_bin("fwt").unwrap();
+        command
+            .current_dir(temp.path())
+            .env("HOME", temp.path())
+            .arg("init");
+        if let Some(shell) = shell {
+            command.env("SHELL", shell);
+        } else {
+            command.env_remove("SHELL");
+        }
+        command
+            .assert()
+            .code(1)
+            .stderr(predicates::str::contains("--shell bash or --shell zsh"));
+    }
+    assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 0);
+}
+
+#[test]
+fn init_preserves_manual_setup_and_rejects_incomplete_blocks() {
+    let temp = tempfile::tempdir().unwrap();
+    let config = temp.path().join(".bashrc");
+    let manual = "# existing setup\neval \"$(git-fwt init --print)\"\n";
+    fs::write(&config, manual).unwrap();
+    let mut command = Command::cargo_bin("fwt").unwrap();
+    command
+        .current_dir(temp.path())
+        .env("HOME", temp.path())
+        .args(["init", "--shell", "bash"]);
+    command.assert().success();
+    assert_eq!(fs::read_to_string(&config).unwrap(), manual);
+    let incomplete = "# >>> fwt shell integration >>>\n";
+    fs::write(&config, incomplete).unwrap();
+    command
+        .assert()
+        .code(1)
+        .stderr(predicates::str::contains("incomplete or edited"));
+    assert_eq!(fs::read_to_string(&config).unwrap(), incomplete);
+}
+
+#[cfg(unix)]
+#[test]
+fn init_preserves_symlink_permissions_and_non_utf8_contents() {
+    use std::os::unix::fs::{PermissionsExt, symlink};
+    let temp = tempfile::tempdir().unwrap();
+    let target = temp.path().join("tracked-bashrc");
+    let original = b"# non-UTF8 comment: \xff\n";
+    fs::write(&target, original).unwrap();
+    fs::set_permissions(&target, fs::Permissions::from_mode(0o640)).unwrap();
+    let config = temp.path().join(".bashrc");
+    symlink(&target, &config).unwrap();
+    Command::cargo_bin("fwt")
+        .unwrap()
+        .current_dir(temp.path())
+        .env("HOME", temp.path())
+        .args(["init", "--shell", "bash"])
+        .assert()
+        .success();
+    assert_eq!(fs::read_link(&config).unwrap(), target);
+    assert!(fs::read(&target).unwrap().starts_with(original));
+    assert_eq!(
+        fs::metadata(&target).unwrap().permissions().mode() & 0o777,
+        0o640
+    );
+}
+
+#[test]
+fn init_print_mode_does_not_require_repository_or_settings() {
+    let temp = tempfile::tempdir().unwrap();
+    for binary in ["fwt", "git-fwt"] {
+        Command::cargo_bin(binary)
+            .unwrap()
+            .current_dir(temp.path())
+            .env_remove("HOME")
+            .args(["init", "--print"])
+            .assert()
+            .success()
+            .stdout(include_str!("../shell/fwt.sh"))
+            .stderr("");
+        Command::cargo_bin(binary)
+            .unwrap()
+            .current_dir(temp.path())
+            .env("HOME", temp.path())
+            .arg("shell-init")
+            .assert()
+            .code(1)
+            .stderr(predicates::str::contains("unrecognized subcommand"));
+        Command::cargo_bin(binary)
+            .unwrap()
+            .arg("--help")
+            .assert()
+            .success()
+            .stdout(predicates::str::contains("  init "))
+            .stdout(predicates::str::contains("shell-init").not());
+    }
+    assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 0);
+}
+
+#[test]
 fn shell_integration_changes_directory_but_help_and_errors_do_not() {
     let fixture = Fixture::new();
     let base = fixture.temp.path().join("worktrees with spaces");
@@ -803,11 +966,21 @@ fn shell_integration_changes_directory_but_help_and_errors_do_not() {
                 format!("{}:{}", bin_dir.display(), std::env::var("PATH").unwrap()),
             )
             .env("FWT_BASE", &base)
+            .env("ZDOTDIR", &fixture.home)
+            .env("FWT_TEST_SHELL", shell)
+            .env(
+                "FWT_TEST_RC",
+                fixture
+                    .home
+                    .join(if shell == "bash" { ".bashrc" } else { ".zshrc" }),
+            )
             .args([
                 "-c",
                 r#"
 set -e
-eval "$(git-fwt shell-init)"
+git-fwt init --shell "$FWT_TEST_SHELL" >/dev/null
+. "$FWT_TEST_RC"
+fwt init --shell "$FWT_TEST_SHELL" >/dev/null
 fwt cd --help >/dev/null
 test "$PWD" = "$(git rev-parse --show-toplevel)"
 fwt cd shell-task

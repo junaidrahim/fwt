@@ -32,8 +32,25 @@ pub enum Command {
     Tune,
     /// Manage bundled coding-agent integrations
     Skill(SkillArgs),
-    /// Print the Bash/Zsh function that enables `fwt cd`
-    ShellInit,
+    /// Enable `fwt cd` by appending integration to your Bash/Zsh config
+    Init(InitArgs),
+}
+
+#[derive(Debug, Args)]
+pub struct InitArgs {
+    /// Shell to configure (defaults to the shell named by SHELL)
+    #[arg(long, value_enum)]
+    pub shell: Option<Shell>,
+
+    /// Print the shell function without changing any files
+    #[arg(long)]
+    pub print: bool,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+pub enum Shell {
+    Bash,
+    Zsh,
 }
 
 #[derive(Debug, Args)]

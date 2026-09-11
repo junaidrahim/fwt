@@ -64,12 +64,21 @@ before cleanup; see [removal behavior](#list-and-remove-checkouts).
 
 ## Change directories with `fwt cd`
 
-For convenient navigation in Bash or Zsh, add this to `~/.bashrc` or
-`~/.zshrc`, then run it in your current shell:
+For convenient navigation in Bash or Zsh, run once:
 
 ```sh
-eval "$(git-fwt shell-init)"
+fwt init
 ```
+
+This detects your configured shell from `$SHELL` and appends a setup block to
+`~/.bashrc` or `$ZDOTDIR/.zshrc` (`~/.zshrc` when `ZDOTDIR` is unset).
+Existing contents are preserved,
+and repeat runs do not add duplicates. Use `fwt init --shell bash` or
+`fwt init --shell zsh` to override detection. No other shells are supported.
+
+Open a new interactive shell that loads that file, or run the activation
+command printed by `fwt init` to enable it in your current shell. Bash login
+shells must source `~/.bashrc` from their login profile.
 
 Then `fwt cd <branch>` changes your shell's directory. The generated function
 handles that operation and forwards other commands to `git-fwt`.

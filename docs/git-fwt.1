@@ -62,9 +62,13 @@ commit graph, and start incremental maintenance.
 This is optional, changes repository/user state, and requires platform support
 for the Git fsmonitor daemon and maintenance scheduler.
 .TP
-.B "fwt shell-init"
-Print the Bash/Zsh function. Load with eval "$(git-fwt shell-init)" to enable
-directory changes through fwt cd. Without it, the binary prints a path.
+.B "fwt init [--shell bash|zsh] [--print]"
+Append shell integration to ~/.bashrc or $ZDOTDIR/.zshrc (default ~/.zshrc).
+Detect the shell from SHELL or override it with --shell. Only Bash and Zsh
+are supported. Preserve existing contents and do not duplicate an existing
+setup. Open a new shell that reads the config, or run the printed activation
+command. Bash login profiles must source ~/.bashrc.
+With --print, only print the function; do not change files.
 .TP
 .B "fwt skill install --agent claude-code"
 Install or refresh the coding-agent skill embedded in this version of fwt.

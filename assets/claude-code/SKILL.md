@@ -37,11 +37,14 @@ fwt cone ls [--json]
 fwt cone set <name> [--description <text>] <dir>...
 fwt cone derive <name> <bazel-target> [--description <text>]
 fwt tune
-fwt shell-init
+fwt init [--shell bash|zsh] [--print]
 fwt skill install --agent claude-code
 ```
 
-Load `eval "$(git-fwt shell-init)"` in Bash/Zsh for directory changes.
+`fwt init` appends integration to the user's Bash/Zsh config; use it only when
+shell setup is requested. It detects `$SHELL` and respects Zsh's `$ZDOTDIR`.
+For session-only activation without file changes, use
+`eval "$(git-fwt init --print)"` in Bash/Zsh.
 `fwt cd` changes directory only when the documented shell shim is installed;
 the binary itself prints the resolved absolute path. For automation, use
 `git-fwt resolve <branch>` and set the subprocess working directory explicitly.

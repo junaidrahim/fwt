@@ -6,7 +6,9 @@ fwt_install_dir=${FWT_INSTALL_DIR:-"${HOME}/.local/bin"}
 fwt_install_prefix=$(dirname -- "${fwt_install_dir}")
 fwt_man_dir=${FWT_MAN_DIR:-"${fwt_install_prefix}/share/man/man1"}
 
-cargo build --release --bin git-fwt --manifest-path "${fwt_source_dir}/Cargo.toml"
+# Use an explicit target directory so Cargo configuration or a caller's
+# CARGO_TARGET_DIR cannot make the install step pick a stale executable.
+cargo build --locked --release --bin git-fwt --target-dir "${fwt_source_dir}/target" --manifest-path "${fwt_source_dir}/Cargo.toml"
 mkdir -p "${fwt_install_dir}"
 mkdir -p "${fwt_man_dir}"
 install -m 755 "${fwt_source_dir}/target/release/git-fwt" "${fwt_install_dir}/git-fwt"

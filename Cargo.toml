@@ -3,9 +3,13 @@ name = "fwt"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.85"
-description = "Fast sparse worktrees for large Bazel monorepos"
+description = "Fast sparse Git worktrees with optional Bazel dependency profiles"
 license = "MIT"
 repository = "https://github.com/junaidrahim/fwt"
+readme = "README.md"
+keywords = ["git", "worktree", "sparse-checkout", "bazel", "cli"]
+categories = ["command-line-utilities", "development-tools"]
+exclude = [".github/", "docs/review.md", "docs/announcement.md", "prd.md"]
 
 [dependencies]
 chrono = { version = "0.4.42", features = ["serde"] }
@@ -24,6 +28,10 @@ tempfile = "3.21.0"
 [[bin]]
 name = "git-fwt"
 path = "src/bin/git-fwt.rs"
+
+[[bin]]
+name = "fwt"
+path = "src/bin/fwt.rs"
 
 [profile.release]
 lto = "thin"

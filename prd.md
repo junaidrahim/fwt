@@ -1,7 +1,13 @@
 # PRD: `fwt` (fast worktrees) — a real CLI for sparse worktrees in big bazel monorepos
 
-Status: draft
+Status: historical design proposal (not the current product documentation)
 Owner: Junaid Rahim
+
+> Retained for design history. See [README.md](README.md) for current behavior.
+> The timing and size figures below describe the original shell prototype;
+> no raw benchmark data for those figures is checked into this repository.
+> They are not verified measurements of the Rust CLI. Some proposed features,
+> milestones, and open questions have since been implemented or changed.
 
 ## 1. Summary
 

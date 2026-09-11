@@ -5,7 +5,7 @@ use clap::{Args, Parser, Subcommand, ValueEnum};
     name = "fwt",
     bin_name = "fwt",
     version,
-    about = "Fast sparse worktrees for large Bazel monorepos",
+    about = "Fast sparse Git worktrees with optional Bazel dependency profiles",
     propagate_version = true
 )]
 pub struct Cli {
@@ -24,14 +24,16 @@ pub enum Command {
     /// Resolve a branch to its worktree path for shell integration
     #[command(hide = true)]
     Resolve(BranchArgs),
-    /// Remove a worktree or move a COW clone to the Trash
-    Rm(BranchArgs),
+    /// Remove a clean worktree or move a COW clone to the Trash
+    Rm(RemoveArgs),
     /// Manage sparse-checkout cone profiles
     Cone(ConeArgs),
     /// Apply the recommended Git performance settings
     Tune,
     /// Manage bundled coding-agent integrations
     Skill(SkillArgs),
+    /// Print the Bash/Zsh function that enables `fwt cd`
+    ShellInit,
 }
 
 #[derive(Debug, Args)]
@@ -63,6 +65,16 @@ pub struct ListArgs {
 pub struct BranchArgs {
     /// Branch whose checkout should be selected
     pub branch: String,
+}
+
+#[derive(Debug, Args)]
+pub struct RemoveArgs {
+    /// Branch whose checkout should be removed (the branch itself is kept)
+    pub branch: String,
+
+    /// Permanently discard uncommitted/untracked files in a linked worktree
+    #[arg(long)]
+    pub force: bool,
 }
 
 #[derive(Debug, Args)]

@@ -1,6 +1,6 @@
-.TH GIT-FWT 1 "September 2026" "fwt 0.1.0" "User Commands"
+.TH GIT-FWT 1 "September 6, 2026" "fwt" "User Commands"
 .SH NAME
-git-fwt \- fast sparse worktrees for large Bazel monorepos
+git-fwt \- fast sparse Git worktrees with optional Bazel profiles
 .SH SYNOPSIS
 .B fwt
 .I command
@@ -36,21 +36,35 @@ List real Git worktrees and registered or discovered COW clones in one view.
 Print the checkout path. When the supplied shell shim is loaded, change the
 parent shell to that path.
 .TP
-.BI "fwt rm " branch
-Remove a linked worktree or move a COW clone to the user's Trash.
+.BI "fwt rm " branch " [--force]"
+Remove a clean linked worktree or move a COW clone to the user's Trash.
+The branch is kept. Dirty or untracked files require explicit --force;
+ignored files are removed even without it. Linked worktree removal is permanent.
+Main checkouts, locked worktrees, and clones owning linked worktrees
+are protected.
 .TP
 .B "fwt cone ls [--json]"
 List cone profiles with their size, provenance, and staleness state.
+Derived profiles currently report "not checked";
+this is not freshness validation.
 .TP
 .BI "fwt cone set " name " [--description " text "] " dir ...
 Write a manual YAML cone profile.
 .TP
 .BI "fwt cone derive " name " " bazel-target " [--description " text "]"
 Run a Bazel query from the full checkout and write a derived YAML cone profile.
+Validate it with the actual build; toolchains and repository rules may need
+additional directories. Bazel may fetch dependencies while querying.
 .TP
 .B "fwt tune"
 Apply the documented Git settings, rewrite the index as version 4, write the
 commit graph, and start incremental maintenance.
+This is optional, changes repository/user state, and requires platform support
+for the Git fsmonitor daemon and maintenance scheduler.
+.TP
+.B "fwt shell-init"
+Print the Bash/Zsh function. Load with eval "$(git-fwt shell-init)" to enable
+directory changes through fwt cd. Without it, the binary prints a path.
 .TP
 .B "fwt skill install --agent claude-code"
 Install or refresh the coding-agent skill embedded in this version of fwt.
@@ -68,6 +82,9 @@ Default cone profile name. Default: default.
 .B FWT_SEED
 Whitespace-, comma-, or colon-separated relative paths copied from the main
 checkout into a fresh worktree.
+Default: .env .claude .bazelbsp .npmrc .vscode.
+Set to an empty string to disable.
+Existing destination entries are preserved. --cow copies all local state.
 .SH FILES
 .TP
 .I ~/.config/fwt/cones/<repo>/<profile>.yaml

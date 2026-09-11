@@ -65,14 +65,23 @@ struct CloneCandidate {
 pub fn effective_context(settings: &Settings) -> Result<RepoContext> {
     let raw = git::context()?;
     let records = RegistryStore::new(settings.registry_path.clone()).load()?;
-    if let Some(record) = records.iter().find(|record| record.path == raw.root) {
-        if let Some(source) = git::context_at(&record.source)? {
+    if let Some(record) = records.iter().find(|record| record.path == raw.main) {
+        if let Some(source) = if record.source.is_dir() {
+            git::context_at(&record.source)?
+        } else {
+            None
+        } {
             return Ok(RepoContext {
                 root: raw.root,
                 main: source.main,
                 repo: record.repo.clone(),
             });
         }
+        return Ok(RepoContext {
+            root: raw.root,
+            main: raw.main,
+            repo: record.repo.clone(),
+        });
     }
     if raw.root == raw.main {
         if let Some(source_path) = git::remote_url(&raw.root, "local")? {
@@ -95,7 +104,7 @@ pub fn effective_context(settings: &Settings) -> Result<RepoContext> {
 pub fn operation_context(settings: &Settings) -> Result<RepoContext> {
     let mut raw = git::context()?;
     let records = RegistryStore::new(settings.registry_path.clone()).load()?;
-    if let Some(record) = records.iter().find(|record| record.path == raw.root) {
+    if let Some(record) = records.iter().find(|record| record.path == raw.main) {
         raw.repo = record.repo.clone();
         return Ok(raw);
     }
@@ -123,7 +132,11 @@ pub fn collect(settings: &Settings) -> Result<CheckoutList> {
         .into_iter()
         .filter(|candidate| match &scope {
             Some(scope) => {
-                candidate.source.as_ref() == Some(&scope.main) || candidate.repo == scope.repo
+                candidate.path == scope.main
+                    || match &candidate.source {
+                        Some(source) => source == &scope.main,
+                        None => candidate.repo == scope.repo,
+                    }
             }
             None => true,
         })

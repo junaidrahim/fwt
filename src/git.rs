@@ -153,10 +153,13 @@ pub fn branch_start(main: &Path, branch: &str) -> Result<BranchStart> {
         main,
         ["for-each-ref", "--format=%(refname:short)", "refs/remotes"],
     )?;
-    let suffix = format!("/{branch}");
     let remotes: Vec<_> = String::from_utf8_lossy(&output.stdout)
         .lines()
-        .filter(|reference| reference.ends_with(&suffix) && !reference.ends_with("/HEAD"))
+        .filter(|reference| {
+            reference.split_once('/').is_some_and(|(_, remote_branch)| {
+                remote_branch == branch && remote_branch != "HEAD"
+            })
+        })
         .map(str::to_owned)
         .collect();
     if remotes.len() == 1 {
@@ -224,16 +227,27 @@ pub fn sparse_checkout(target: &Path, dirs: &[String]) -> Result<()> {
 }
 
 pub fn full_checkout(target: &Path) -> Result<()> {
+    // Older repositories may keep sparse settings in shared config. Explicit
+    // worktree overrides make --full independent without changing the source.
+    run_git(
+        target,
+        ["config", "--worktree", "core.sparseCheckout", "false"],
+    )?;
+    run_git(
+        target,
+        ["config", "--worktree", "core.sparseCheckoutCone", "false"],
+    )?;
+    run_git(target, ["config", "--worktree", "index.sparse", "false"])?;
     run_git(target, ["checkout"])
 }
 
-pub fn remove_worktree(main: &Path, target: &Path) -> Result<()> {
+pub fn remove_worktree(main: &Path, target: &Path, force: bool) -> Result<()> {
     let mut command = Command::new("git");
-    command
-        .args(["-C"])
-        .arg(main)
-        .args(["worktree", "remove", "--force"])
-        .arg(target);
+    command.args(["-C"]).arg(main).args(["worktree", "remove"]);
+    if force {
+        command.arg("--force");
+    }
+    command.arg(target);
     run_command(command, "git worktree remove")
 }
 

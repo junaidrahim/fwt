@@ -7,7 +7,10 @@ use std::{
 use chrono::Utc;
 
 use crate::{
-    cli::{Agent, BranchArgs, ConeCommand, ListArgs, NewArgs, SkillCommand, SkillInstallArgs},
+    cli::{
+        Agent, BranchArgs, ConeCommand, ListArgs, NewArgs, RemoveArgs, SkillCommand,
+        SkillInstallArgs,
+    },
     cone,
     error::{FwtError, Result},
     git,
@@ -21,42 +24,56 @@ const CLAUDE_SKILL: &str = include_str!("../assets/claude-code/SKILL.md");
 pub fn new(settings: &Settings, args: NewArgs) -> Result<()> {
     let context = listing::operation_context(settings)?;
     git::validate_branch(&context.main, &args.branch)?;
-    git::assert_worktree_config(&context.main)?;
-
     let target = target_path(settings, &context.repo, &args.branch)?;
-    if target.exists() {
+    if args.cow && target.starts_with(&context.main) {
+        return Err(FwtError::Validation("--cow destination must be outside the source checkout; set FWT_BASE to a sibling directory".to_owned()));
+    }
+    if target
+        .try_exists()
+        .map_err(|error| FwtError::io("inspect worktree target", error))?
+    {
         if target.join(".git").exists() {
-            println!("exists: {}", target.display());
-            return Ok(());
+            let existing = git::context_at(&target)?;
+            let expected_main = if args.cow {
+                git::remote_url(&target, "local")?
+            } else {
+                existing.as_ref().map(|repo| repo.main.clone())
+            };
+            if expected_main.as_ref() == Some(&context.main)
+                && git::current_branch(&target)?.as_deref() == Some(&args.branch)
+                && target.join(".git").is_dir() == args.cow
+            {
+                println!("exists: {} (checkout kept as-is)", target.display());
+                return Ok(());
+            }
         }
         return Err(FwtError::Validation(format!(
-            "{} already exists but is not a git checkout",
+            "{} already exists but is not the requested branch/repository/checkout kind",
             target.display()
         )));
     }
-    fs::create_dir_all(
-        target
-            .parent()
-            .ok_or_else(|| FwtError::Validation("worktree path has no parent".to_owned()))?,
-    )
-    .map_err(|error| FwtError::io(format!("create parent of {}", target.display()), error))?;
-
-    if args.cow {
-        return new_cow(settings, &context, &target, &args.branch);
-    }
-
-    let profile = if args.full {
+    let profile = if args.full || args.cow {
         None
     } else {
         let name = args.cone.as_deref().unwrap_or(&settings.default_cone);
         Some(cone::load(settings, &context.repo, name)?)
     };
 
-    println!("creating worktree (no checkout): {}", target.display());
-    if let Err(error) = git::add_worktree(&context.main, &target, &args.branch) {
-        git::cleanup_failed_worktree(&context.main, &target);
-        return Err(error);
+    fs::create_dir_all(
+        target
+            .parent()
+            .ok_or_else(|| FwtError::Validation("worktree path has no parent".to_owned()))?,
+    )
+    .map_err(|error| FwtError::io(format!("create parent of {}", target.display()), error))?;
+    if args.cow {
+        return new_cow(settings, &context, &target, &args.branch);
     }
+    git::assert_worktree_config(&context.main)?;
+
+    println!("creating worktree (no checkout): {}", target.display());
+    // Git owns rollback of a failed add. Another process may have created the
+    // destination in the meantime, so only clean up after our add succeeds.
+    git::add_worktree(&context.root, &target, &args.branch)?;
 
     let checkout = if let Some(profile) = &profile {
         println!(
@@ -102,7 +119,7 @@ pub fn cd(settings: &Settings, args: BranchArgs) -> Result<()> {
     Ok(())
 }
 
-pub fn remove(settings: &Settings, args: BranchArgs) -> Result<()> {
+pub fn remove(settings: &Settings, args: RemoveArgs) -> Result<()> {
     let entry = listing::resolve_entry(settings, &args.branch)?;
     match entry.kind {
         CheckoutKind::Worktree => {
@@ -118,11 +135,17 @@ pub fn remove(settings: &Settings, args: BranchArgs) -> Result<()> {
                     entry.path.display()
                 )));
             }
-            git::remove_worktree(source, &entry.path)?;
+            git::remove_worktree(source, &entry.path, args.force)?;
             RegistryStore::new(settings.registry_path.clone()).remove(&entry.path)?;
             println!("removed worktree {}", entry.path.display());
         }
         CheckoutKind::CowClone => {
+            if git::list_worktrees(&entry.path)?.len() > 1 {
+                return Err(FwtError::Validation(format!(
+                    "{} owns linked worktrees; remove those worktrees before trashing the clone",
+                    entry.path.display()
+                )));
+            }
             let trashed = move_to_trash(settings, &entry.path)?;
             RegistryStore::new(settings.registry_path.clone()).remove(&entry.path)?;
             prune_empty_branch_parents(&entry.path, &settings.base);
@@ -252,7 +275,21 @@ fn new_cow(
     target: &Path,
     branch: &str,
 ) -> Result<()> {
-    ensure_cow_supported(&context.main, &settings.base)?;
+    if git::is_sparse(&context.main)? {
+        return Err(FwtError::Validation(
+            "--cow requires a full source checkout; use --full for a full linked worktree"
+                .to_owned(),
+        ));
+    }
+    let parent = target
+        .parent()
+        .ok_or_else(|| FwtError::Validation("clone path has no parent".to_owned()))?;
+    if git::canonical(parent)?.starts_with(&context.main) {
+        return Err(FwtError::Validation(
+            "--cow destination must be outside the source checkout".to_owned(),
+        ));
+    }
+    ensure_cow_supported(&context.main, parent)?;
     if git::is_dirty(&context.main)? {
         eprintln!(
             "fwt: warning: {} is dirty; its uncommitted changes will be carried onto '{}'",
@@ -265,9 +302,17 @@ fn new_cow(
         context.main.display(),
         target.display()
     );
+    // Reserve the destination before copying so a competing creator cannot
+    // cause cp to nest into an existing checkout or rollback to delete it.
+    fs::create_dir(target).map_err(|error| {
+        FwtError::io(
+            format!("reserve clone destination {}", target.display()),
+            error,
+        )
+    })?;
     let output = Command::new("cp")
         .arg("-Rc")
-        .arg(&context.main)
+        .arg(context.main.join("."))
         .arg(target)
         .output()
         .map_err(|error| FwtError::io("run cp -Rc", error))?;
@@ -279,7 +324,8 @@ fn new_cow(
     if !diagnostics.is_empty() {
         eprintln!("{}", diagnostics.join("\n"));
     }
-    if !target.join(".git").is_dir() || (!output.status.success() && !diagnostics.is_empty()) {
+    let only_socket_warnings = !output.stderr.is_empty() && diagnostics.is_empty();
+    if !target.join(".git").is_dir() || (!output.status.success() && !only_socket_warnings) {
         cleanup_failed_clone(target);
         return Err(FwtError::underlying(
             "cp -Rc",
@@ -363,7 +409,31 @@ fn seed_local_state(settings: &Settings, source: &Path, target: &Path) {
         }
         let from = source.join(item);
         let to = target.join(item);
-        if !from.exists() || to.exists() {
+        if !from.exists() || to.symlink_metadata().is_ok() {
+            continue;
+        }
+        // A tracked symlink in the destination must never redirect seed writes
+        // outside the newly-created checkout.
+        let mut ancestor = to.parent();
+        let mut symlink_parent = false;
+        while let Some(parent) = ancestor {
+            if parent == target {
+                break;
+            }
+            if parent
+                .symlink_metadata()
+                .is_ok_and(|metadata| metadata.file_type().is_symlink())
+            {
+                symlink_parent = true;
+                break;
+            }
+            ancestor = parent.parent();
+        }
+        if symlink_parent {
+            eprintln!(
+                "fwt: warning: ignoring FWT_SEED entry '{}' with a symlink parent",
+                item.display()
+            );
             continue;
         }
         if let Some(parent) = to.parent() {
@@ -464,6 +534,22 @@ fn target_path(settings: &Settings, repo: &str, branch: &str) -> Result<PathBuf>
         return Err(FwtError::Validation(
             "worktree target escapes FWT_BASE".to_owned(),
         ));
+    }
+    let mut parent = target.parent();
+    while let Some(path) = parent {
+        if path == settings.base {
+            break;
+        }
+        if path
+            .symlink_metadata()
+            .is_ok_and(|metadata| metadata.file_type().is_symlink())
+        {
+            return Err(FwtError::Validation(format!(
+                "worktree parent {} is a symlink",
+                path.display()
+            )));
+        }
+        parent = path.parent();
     }
     Ok(target)
 }

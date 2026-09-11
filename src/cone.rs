@@ -230,11 +230,13 @@ fn write_profile(settings: &Settings, repo: &str, profile: &ConeProfile) -> Resu
 fn read_yaml(path: &Path, expected_name: Option<&str>) -> Result<ConeProfile> {
     let bytes =
         fs::read(path).map_err(|error| FwtError::io(format!("read {}", path.display()), error))?;
-    let profile: ConeProfile = serde_yaml::from_slice(&bytes).map_err(|source| FwtError::Yaml {
-        context: format!("parse {}", path.display()),
-        source,
-    })?;
+    let mut profile: ConeProfile =
+        serde_yaml::from_slice(&bytes).map_err(|source| FwtError::Yaml {
+            context: format!("parse {}", path.display()),
+            source,
+        })?;
     validate_profile(&profile, expected_name)?;
+    profile.dirs = normalize_dirs(profile.dirs)?;
     Ok(profile)
 }
 
@@ -336,6 +338,8 @@ fn normalize_dir(value: &str) -> Result<String> {
     let trimmed = value.trim().trim_start_matches("./").trim_end_matches('/');
     let path = Path::new(trimmed);
     if trimmed.is_empty()
+        || trimmed.chars().any(char::is_control)
+        || trimmed.contains(['\\', '"'])
         || path.is_absolute()
         || path.components().any(|component| {
             matches!(

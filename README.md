@@ -3,56 +3,55 @@
 Create a Git worktree with the directories you need, without checking out the
 whole monorepo first. `fwt` combines Git's sparse-checkout and sparse index
 with reusable directory profiles, optional Bazel dependency discovery, and
-macOS APFS copy-on-write clones.
+macOS APFS copy-on-write (COW) clones.
 
 Manual profiles work with ordinary Git repositories. Bazel is only required
 for `fwt cone derive`.
 
-## Install and try it
+## Install
 
-You need Rust 1.85+ (including Cargo), Git 2.37+, and macOS or Linux. Windows
-is not currently a tested/supported installation target.
-
-Install from crates.io:
+You need Rust 1.85+ (including Cargo), Git 2.37+, and macOS or Linux. Native
+Windows is not currently supported.
 
 ```sh
 cargo install fwt --locked
+```
+
+Cargo installs `fwt` and `git-fwt` in its bin directory (normally
+`~/.cargo/bin`). Make sure that directory is on `PATH`. Use `fwt` directly or
+invoke the same CLI as `git fwt`.
+
+Verify your installation and view the built-in help:
+
+```sh
 fwt --version
-git fwt -h
+fwt --help
 ```
 
-The first crates.io release is still pending in
-[release PR #2](https://github.com/junaidrahim/fwt/pull/2). The command above
-will work after that PR is merged and publication succeeds. Until then, or to
-install the latest development version, use:
+For help through Git, use `git fwt -h`. Git intercepts `git fwt --help` to
+open a man page, which Cargo does not install.
+
+## Quick start
+
+Start in an existing Git checkout. A **cone** is a named list of directories
+to include. In this example, replace `src` with a directory in your repository:
 
 ```sh
-cargo install --git https://github.com/junaidrahim/fwt.git --locked
-```
-
-Cargo installs both `fwt` and `git-fwt` in its bin directory (normally
-`~/.cargo/bin`); put that directory on `PATH`. `git-fwt` gives you `git fwt`
-through Git's external-command discovery.
-
-Try a sparse checkout of this repository; no Bazel setup is needed:
-
-```sh
-git clone https://github.com/junaidrahim/fwt.git
-cd fwt
-# A "cone" is a named list of directories.
+cd /path/to/your/repository
 fwt cone set default src
 fwt new try-fwt
+fwt ls
 cd "$(git-fwt resolve try-fwt)"
 git sparse-checkout list
 git status --short
 ```
 
-The new checkout contains `src/` and root-level files such as `Cargo.toml`.
-This is an **editing** profile: it omits `assets/` and `shell/`, which this
-project embeds at compile time. In your own repository, choose directories for
-the task, or use `--full` when you need every tracked file.
+The new worktree contains the selected directory and root-level files. This
+is an editing profile: a build may need additional directories. See
+[reusable profiles](#define-reusable-profiles) for Bazel dependency discovery,
+or use `--full` when you need every tracked file.
 
-To remove the example, first return to the original checkout:
+After trying it, return to the original checkout and remove the example:
 
 ```sh
 cd -
@@ -60,35 +59,64 @@ fwt rm try-fwt
 git branch -d try-fwt
 ```
 
-The alternative `./install.sh` builds from source and installs `git-fwt` plus
-an `fwt` symlink in `~/.local/bin`, and the manual page in
-`~/.local/share/man/man1`. Override `FWT_INSTALL_DIR` and `FWT_MAN_DIR` as needed.
-`git help fwt` and `git fwt --help` need that manual page on your man search
-path. Use `fwt --help` or `git fwt -h` for built-in help with either install.
+`fwt rm` removes the checkout, not the branch. Save any work you want to keep
+before cleanup; see [removal behavior](#list-and-remove-checkouts).
 
 ## Change directories with `fwt cd`
 
-Add this to `~/.bashrc` or `~/.zshrc`, and run it in your current shell:
+For convenient navigation in Bash or Zsh, add this to `~/.bashrc` or
+`~/.zshrc`, then run it in your current shell:
 
 ```sh
 eval "$(git-fwt shell-init)"
 ```
 
 Then `fwt cd <branch>` changes your shell's directory. The generated function
-only handles that operation and forwards other commands to `git-fwt`.
-Without the function, `fwt cd` and `git fwt cd` print a path. In automation, use
-`git-fwt resolve <branch>` and set the next process's working directory.
+handles that operation and forwards other commands to `git-fwt`.
+Without the function, `fwt cd` and `git fwt cd` print a path. In automation,
+use `git-fwt resolve <branch>` and set the next process's working directory.
+
+## Define reusable profiles
+
+Run profile commands inside the repository they belong to. Directory names
+are relative to its root. Replace `service` and the Bazel target below with
+paths and targets from your repository:
+
+```sh
+fwt cone set edit service --description "Edit the service only"
+fwt cone ls
+
+# Optional: run in a full checkout with a working local Bazel setup.
+fwt cone derive service-build '//service/...'
+```
+
+Profiles are YAML files under `~/.config/fwt/cones/<repo>/`. `cone set` and
+`cone derive` replace a profile with the same name. Editing a saved profile
+affects future worktrees; it does not change existing checkouts.
+
+A derived profile records the target and derivation time. It uses
+`bazel query 'buildfiles(deps(TARGET))' --output package`; external packages
+are excluded. Validate it with your actual build: toolchains, repository
+rules, and files outside package boundaries can require more paths. Bazel
+may fetch dependencies or start its server while querying. Derived profiles
+are not automatically checked for staleness.
+
+Git cone mode includes root files and files directly inside each selected
+directory's ancestors. It is a checkout optimization, not a security boundary.
+Expand a live checkout with `git sparse-checkout add <dir>`.
 
 ## Choose the checkout for the task
 
-Run these commands inside the repository you want to work on:
+Run these commands inside the repository you want to work on. The named
+profiles below are defined in the previous section:
 
 | Need | Command | What it creates |
 | --- | --- | --- |
-| Edit or review a few directories | `fwt new fix/login --cone edit` | Sparse linked worktree; define `edit` first |
-| Use the default profile | `fwt new fix/login` | Uses `FWT_CONE_DEFAULT`, otherwise `default` |
+| Edit or review selected directories | `fwt new fix/login --cone edit` | Sparse linked worktree |
+| Work with a Bazel-derived profile | `fwt new fix/build --cone service-build` | Sparse linked worktree; validate the intended build |
+| Use the default profile | `fwt new next-task` | Sparse linked worktree using `FWT_CONE_DEFAULT`, otherwise `default` |
 | All tracked files | `fwt new investigation --full` | Full linked worktree; no cone required |
-| Full local state on macOS APFS | `fwt new experiment --cow` | Independent clone from the main checkout; same APFS volume required |
+| Full local state on macOS APFS | `fwt new experiment --cow` | Independent clone from the full main checkout; same APFS volume required |
 
 Linked worktrees share Git objects and local branches. A new branch starts at
 the invoking checkout's `HEAD`; an existing local branch is reused, or an
@@ -101,34 +129,10 @@ checkout's directory name; branch slashes create nested directories. Repeating
 `new` for a matching checkout keeps it as-is, including its current cone.
 
 `--cow` copies the full main checkout, including dirty and ignored files, and
-adds a `local` remote pointing back to it. Start from a full source checkout
-and avoid concurrent writes there while copying. Clones have independent
-Git metadata; APFS shares file data until it changes. This does not share a
-Bazel analysis cache or eliminate build startup costs.
-
-## Define reusable profiles
-
-```sh
-fwt cone set edit service --description "Edit the service only"
-fwt cone ls
-
-# Optional: run in a full checkout with a working local Bazel setup.
-fwt cone derive service-build '//service/...'
-fwt new fix/build --cone service-build
-```
-
-Profiles are YAML files under `~/.config/fwt/cones/<repo>/`. A derived profile
-records the target and derivation time. It uses
-`bazel query 'buildfiles(deps(TARGET))' --output package`; external packages
-are excluded. Validate a derived profile with your actual build: toolchains,
-repository rules, and files outside package boundaries can require more paths.
-Bazel may fetch dependencies or start its server while querying.
-
-Git cone mode includes root files and files directly inside each selected
-directory's ancestors. It is a checkout optimization, not a permissions or
-security boundary. Expand a live checkout with
-`git sparse-checkout add <dir>`. Editing a saved profile only affects future
-worktrees. Derived profiles are **not automatically checked for staleness**.
+adds a `local` remote pointing back to it. Avoid concurrent writes to the
+source while copying. Clones have independent Git metadata; APFS shares file
+data until it changes. This does not share a Bazel analysis cache or eliminate
+build startup costs.
 
 ## List and remove checkouts
 
@@ -144,11 +148,11 @@ clones. Outside a repository, it discovers clones under `FWT_BASE` and sources
 recorded in the clone registry; it is not a global index of all Git worktrees.
 Ambiguous branch names produce an error with the matching paths.
 
-`rm` keeps the branch. For linked worktrees it invokes Git's normal removal:
-dirty or untracked files require an explicit `--force`, which permanently
-discards them. Ignored files (including seeded `.env` files) are removed even
-without `--force`, so preserve anything you need before removal. The main
-checkout and locked worktrees are protected.
+For linked worktrees, `rm` invokes Git's normal removal. Dirty or untracked
+files require an explicit `--force`, which permanently discards them. Ignored
+files (including seeded `.env` files) are removed even without `--force`, so
+preserve anything you need first. The main checkout and locked worktrees are
+protected. The branch is kept.
 
 COW clones go to `~/.Trash`, or `$FWT_BASE/.fwt-trash` when the home directory
 is on another volume. The command prints their recoverable location. Remove
@@ -180,7 +184,7 @@ read, including during `cone ls`.
 maintenance; see the effects and platform caveats in the
 [reference](docs/reference.md#git-tuning) before running it.
 
-## Coding agents and contributors
+## Coding agents
 
 ```sh
 fwt skill install --agent claude-code
@@ -190,12 +194,21 @@ This installs the bundled, versioned instructions at
 `~/.claude/skills/fwt/SKILL.md`. Re-run it after upgrading; it replaces local
 edits to that generated file. Other agents can call the CLI and use JSON.
 
-See the [command and troubleshooting reference](docs/reference.md),
-[contribution guide](CONTRIBUTING.md), and
-[benchmark procedure](docs/benchmarking.md). The speedup depends on repository
-size, filesystem, selected directories, and local state; this repo does not
-yet contain a reproducible large-monorepo benchmark for the Rust CLI.
+Commands return 0 on success, 1 for usage/configuration/local I/O errors, and
+2 for underlying Git/Bazel failures. See the
+[command and troubleshooting reference](docs/reference.md) for JSON fields
+and detailed behavior.
 
-MIT licensed. Releases use [release-plz](https://release-plz.dev/): Conventional
-Commits determine version changes, and merging a release PR publishes the
-crate. See [release details](CONTRIBUTING.md#releases).
+## Development and releases
+
+See the [contribution guide](CONTRIBUTING.md) for development and testing,
+and the [benchmark procedure](docs/benchmarking.md) for measuring performance.
+The speedup depends on repository size, filesystem, selected directories, and
+local state; this repo does not yet contain a reproducible large-monorepo
+benchmark for the Rust CLI.
+
+Releases use [release-plz](https://release-plz.dev/). Changes on `main` update
+a release PR using Conventional Commits; merging that release PR publishes
+the crate to crates.io. See [release details](CONTRIBUTING.md#releases).
+
+[MIT licensed](LICENSE).

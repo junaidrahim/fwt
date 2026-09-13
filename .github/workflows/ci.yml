@@ -38,6 +38,8 @@ jobs:
           cargo install --path . --locked --root "$RUNNER_TEMP/fwt-install"
           "$RUNNER_TEMP/fwt-install/bin/fwt" --version
           "$RUNNER_TEMP/fwt-install/bin/git-fwt" --version
+      - name: Smoke-test benchmark runner (local fixture, no downloads)
+        run: FWT_BENCH_BINARY="$RUNNER_TEMP/fwt-install/bin/fwt" python3 scripts/test_benchmark.py
 
   lint:
     name: Formatting and Clippy

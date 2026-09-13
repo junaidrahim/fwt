@@ -1,0 +1,30 @@
+[
+  {
+    "name": "tensorflow",
+    "repository": "https://github.com/tensorflow/tensorflow.git",
+    "revision": "4acac40ffb5029edf3c0f98a4a50721ff8b26b95",
+    "directories": ["tensorflow/core/kernels"],
+    "task": "Edit or review TensorFlow core kernel implementations and their colocated tests"
+  },
+  {
+    "name": "cockroach",
+    "repository": "https://github.com/cockroachdb/cockroach.git",
+    "revision": "8812064a015d2faf99d3fc7e15880f94042954b0",
+    "directories": ["pkg/kv"],
+    "task": "Edit or review the distributed key-value layer and its colocated tests"
+  },
+  {
+    "name": "envoy",
+    "repository": "https://github.com/envoyproxy/envoy.git",
+    "revision": "1dc43a3ace95e03b3f26a50114d72d3b21a2bf7d",
+    "directories": ["source/common/http", "test/common/http"],
+    "task": "Edit or review shared HTTP implementation and corresponding tests"
+  },
+  {
+    "name": "bazel",
+    "repository": "https://github.com/bazelbuild/bazel.git",
+    "revision": "24dab1f320b42ca5f6d43c57fea4680cf4e02900",
+    "directories": ["src/main/java/com/google/devtools/build/lib/skyframe", "src/test/java/com/google/devtools/build/lib/skyframe"],
+    "task": "Edit or review Skyframe integration and corresponding tests"
+  }
+]

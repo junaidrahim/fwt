@@ -40,6 +40,8 @@ cargo +1.85.0 test --locked --all-targets --all-features
 | `src/shell.rs`, `shell/fwt.sh` | Idempotent Bash/Zsh config setup and embedded directory-change function |
 | `assets/claude-code/SKILL.md` | Agent instructions embedded in the binaries |
 | `tests/cli.rs` | End-to-end tests using real Git repositories |
+| `scripts/benchmark.py`, `scripts/test_benchmark.py` | Public-monorepo checkout benchmark and network-free smoke tests |
+| `benchmarks/` | Pinned repository profiles, raw measurements, and reports |
 
 Keep the README, manual page, reference, and bundled skill aligned when the
 command surface changes. The skill's version marker is rendered at runtime;

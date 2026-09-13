@@ -208,13 +208,39 @@ Commands return 0 on success, 1 for usage/configuration/local I/O errors, and
 [command and troubleshooting reference](docs/reference.md) for JSON fields
 and detailed behavior.
 
+## Benchmarks
+
+Measured on September 14, 2026: Apple M4, 16 GiB RAM, macOS 26.1, APFS SSD,
+Git 2.50.1, release build of fwt at `e0845bb`. Times are medians of six
+warm-cache checkout creations per mode, after one warm-up, with rotating
+run order.
+
+| Repository | Files: full → sparse | Full Git | Native sparse Git | fwt sparse | Full / fwt |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [TensorFlow](https://github.com/tensorflow/tensorflow/tree/4acac40ffb5029edf3c0f98a4a50721ff8b26b95) | 36,947 → 2,278 | 2.653 s | 0.201 s | 0.248 s | 10.7× |
+| [CockroachDB](https://github.com/cockroachdb/cockroach/tree/8812064a015d2faf99d3fc7e15880f94042954b0) | 20,517 → 2,043 | 1.738 s | 0.210 s | 0.260 s | 6.7× |
+| [Envoy](https://github.com/envoyproxy/envoy/tree/1dc43a3ace95e03b3f26a50114d72d3b21a2bf7d) | 14,573 → 570 | 1.168 s | 0.093 s | 0.145 s | 8.1× |
+| [Bazel](https://github.com/bazelbuild/bazel/tree/24dab1f320b42ca5f6d43c57fea4680cf4e02900) | 13,267 → 830 | 1.097 s | 0.112 s | 0.163 s | 6.7× |
+
+These are **focused editing/review profiles**, not full-repository or verified
+Bazel build checkouts: TensorFlow core kernels, CockroachDB's KV layer, Envoy
+HTTP source/tests, and Bazel Skyframe integration/tests. Native sparse Git and
+fwt produce the same files; fwt adds a little overhead for validation and
+profile handling. The main speedup is from materializing fewer files.
+
+Cloning, profile setup, cleanup, and builds are excluded; local-state seeding
+is disabled and `fwt tune` is not used. Results depend on the selected paths,
+hardware, filesystem, and cache state—not a universal speedup guarantee.
+See [exact profiles, revisions, and every trial](benchmarks/2026-09-14-macos-m4.md),
+[raw results](benchmarks/2026-09-14-macos-m4.json), and the
+[reproduction instructions and repository shortlist](docs/benchmarking.md).
+
 ## Development and releases
 
 See the [contribution guide](CONTRIBUTING.md) for development and testing,
 and the [benchmark procedure](docs/benchmarking.md) for measuring performance.
-The speedup depends on repository size, filesystem, selected directories, and
-local state; this repo does not yet contain a reproducible large-monorepo
-benchmark for the Rust CLI.
+The public-monorepo measurements above cover checkout creation; Bazel build,
+local-state seeding, listing, and COW performance need separate measurements.
 
 Releases use [release-plz](https://release-plz.dev/). Changes on `main` update
 a release PR using Conventional Commits; merging that release PR publishes

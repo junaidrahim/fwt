@@ -1,0 +1,3276 @@
+{
+  "environment": {
+    "timestamp_utc": "2026-09-13T19:36:15.358644+00:00",
+    "platform": "Darwin-25.1.0-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "python": "3.14.7",
+    "filesystem": "APFS, internal SSD",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "fwt_version": "fwt 0.1.0",
+    "fwt_revision": "e0845bbce2a49b96843a59afa74dabc59978982b",
+    "fwt_source_dirty": false,
+    "binary_sha256": "1f9178a3885c2a896d290e5191fb7f70e29d49850a18e4557de1ee6318a9b560",
+    "harness_sha256": "9e7d80fd859746921a670a2068435afad92e6d5041393b757973e43ede0ddd28",
+    "manifest_sha256": "b800f1dbd5056ae38a88b6d2c3122d99c40f8cf1b9c47e3f99790b5c99dcd9e6",
+    "runs_per_mode": 6,
+    "warmups_per_mode": 1,
+    "cache": "warm/uncontrolled OS cache; full source checkout and one warmup per mode",
+    "clone": "depth=1, full blobs, no submodules or LFS downloads",
+    "seeding": "disabled (FWT_SEED='')",
+    "tune": "not run",
+    "timing": "wall clock; creation only; downloads, profile setup, validation and removal excluded",
+    "build_verified": false,
+    "cpu": "Apple M4",
+    "memory_bytes": 17179869184,
+    "os_version": "26.1"
+  },
+  "repositories": [
+    {
+      "name": "tensorflow",
+      "repository": "https://github.com/tensorflow/tensorflow.git",
+      "revision": "4acac40ffb5029edf3c0f98a4a50721ff8b26b95",
+      "directories": [
+        "tensorflow/core/kernels"
+      ],
+      "task": "Edit or review TensorFlow core kernel implementations and their colocated tests",
+      "tracked_files": 36947,
+      "bazel_markers": [
+        "MODULE.bazel",
+        "WORKSPACE"
+      ],
+      "bazel_build_files": 1347,
+      "warmups": [
+        {
+          "mode": "git_full",
+          "label": "warmup",
+          "seconds": 2.6706185,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "warmup",
+          "seconds": 0.19540075,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-warmup",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-warmup",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-warmup",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "warmup",
+          "seconds": 0.246097709,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-warmup",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "trials": [
+        {
+          "mode": "git_full",
+          "label": "1",
+          "seconds": 2.587370166,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "1",
+          "seconds": 0.198107,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-1",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-1",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-1",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "1",
+          "seconds": 0.247862584,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-1",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "2",
+          "seconds": 0.198238,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-2",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-2",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-2",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "2",
+          "seconds": 0.24674375,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-2",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "2",
+          "seconds": 2.625203791,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "3",
+          "seconds": 0.247146333,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-3",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "3",
+          "seconds": 2.651890792,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "3",
+          "seconds": 0.199286666,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-3",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-3",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-3",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "4",
+          "seconds": 2.665007291,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "4",
+          "seconds": 0.2355135,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-4",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-4",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-4",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "4",
+          "seconds": 0.247113167,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-4",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "5",
+          "seconds": 0.201814458,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-5",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-5",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-5",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "5",
+          "seconds": 0.250251375,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-5",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "5",
+          "seconds": 2.654181167,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "6",
+          "seconds": 0.24867125,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-6",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "6",
+          "seconds": 2.688240458,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276,
+          "path_list_sha256": "1d5697d058610b3cbdb116c780a514a96cc47dd3e59977081a6e50cd9d3bffb1",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_full-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "6",
+          "seconds": 0.202477542,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709,
+          "path_list_sha256": "e70f48c8e6f6dffad1370445e6401550ae04c4418b6abcc34bb7baa0292ea9c2",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/tensorflow",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-6",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-6",
+              "stdin": "tensorflow/core/kernels\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/tensorflow@bench-git_sparse-6",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "git_full": {
+          "median_seconds": 2.6530359795000003,
+          "min_seconds": 2.587370166,
+          "max_seconds": 2.688240458,
+          "files_present": 36947,
+          "tracked_file_logical_bytes": 491353276
+        },
+        "git_sparse": {
+          "median_seconds": 0.200550562,
+          "min_seconds": 0.198107,
+          "max_seconds": 0.2355135,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709
+        },
+        "fwt_sparse": {
+          "median_seconds": 0.2475044585,
+          "min_seconds": 0.24674375,
+          "max_seconds": 0.250251375,
+          "files_present": 2278,
+          "tracked_file_logical_bytes": 21625709
+        }
+      }
+    },
+    {
+      "name": "cockroach",
+      "repository": "https://github.com/cockroachdb/cockroach.git",
+      "revision": "8812064a015d2faf99d3fc7e15880f94042954b0",
+      "directories": [
+        "pkg/kv"
+      ],
+      "task": "Edit or review the distributed key-value layer and its colocated tests",
+      "tracked_files": 20517,
+      "bazel_markers": [
+        "WORKSPACE"
+      ],
+      "bazel_build_files": 1572,
+      "warmups": [
+        {
+          "mode": "git_full",
+          "label": "warmup",
+          "seconds": 1.724569459,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "warmup",
+          "seconds": 0.213555542,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-warmup",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-warmup",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-warmup",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "warmup",
+          "seconds": 0.262666791,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-warmup",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "trials": [
+        {
+          "mode": "git_full",
+          "label": "1",
+          "seconds": 1.717532375,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "1",
+          "seconds": 0.208447417,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-1",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-1",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-1",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "1",
+          "seconds": 0.25933975,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-1",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "2",
+          "seconds": 0.213385209,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-2",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-2",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-2",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "2",
+          "seconds": 0.262273709,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-2",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "2",
+          "seconds": 1.721308125,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "3",
+          "seconds": 0.265329917,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-3",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "3",
+          "seconds": 1.755864292,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "3",
+          "seconds": 0.212240875,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-3",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-3",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-3",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "4",
+          "seconds": 1.740776625,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "4",
+          "seconds": 0.20838525,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-4",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-4",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-4",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "4",
+          "seconds": 0.261351792,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-4",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "5",
+          "seconds": 0.211225459,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-5",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-5",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-5",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "5",
+          "seconds": 0.259133583,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-5",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "5",
+          "seconds": 1.73769575,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "6",
+          "seconds": 0.259134417,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-6",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "6",
+          "seconds": 1.737883625,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555,
+          "path_list_sha256": "480a360005b37f45d7e4815165ef3585c1b0c1280867a78ca352d804ec17646f",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_full-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "6",
+          "seconds": 0.208598375,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866,
+          "path_list_sha256": "ab5b70b41c080a2f7e8c7ba7cb7a05b9ca7d5fe412c463b04bccd9cae397351e",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/cockroach",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-6",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-6",
+              "stdin": "pkg/kv\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/cockroach@bench-git_sparse-6",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "git_full": {
+          "median_seconds": 1.7377896875,
+          "min_seconds": 1.717532375,
+          "max_seconds": 1.755864292,
+          "files_present": 20517,
+          "tracked_file_logical_bytes": 519008555
+        },
+        "git_sparse": {
+          "median_seconds": 0.209911917,
+          "min_seconds": 0.20838525,
+          "max_seconds": 0.213385209,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866
+        },
+        "fwt_sparse": {
+          "median_seconds": 0.260345771,
+          "min_seconds": 0.259133583,
+          "max_seconds": 0.265329917,
+          "files_present": 2043,
+          "tracked_file_logical_bytes": 29103866
+        }
+      }
+    },
+    {
+      "name": "envoy",
+      "repository": "https://github.com/envoyproxy/envoy.git",
+      "revision": "1dc43a3ace95e03b3f26a50114d72d3b21a2bf7d",
+      "directories": [
+        "source/common/http",
+        "test/common/http"
+      ],
+      "task": "Edit or review shared HTTP implementation and corresponding tests",
+      "tracked_files": 14573,
+      "bazel_markers": [
+        "MODULE.bazel"
+      ],
+      "bazel_build_files": 1865,
+      "warmups": [
+        {
+          "mode": "git_full",
+          "label": "warmup",
+          "seconds": 1.1479765,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "warmup",
+          "seconds": 0.093840875,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-warmup",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-warmup",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-warmup",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "warmup",
+          "seconds": 0.143406666,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-warmup",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "trials": [
+        {
+          "mode": "git_full",
+          "label": "1",
+          "seconds": 1.14419175,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "1",
+          "seconds": 0.092964417,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-1",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-1",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-1",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "1",
+          "seconds": 0.145684875,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-1",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "2",
+          "seconds": 0.093250709,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-2",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-2",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-2",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "2",
+          "seconds": 0.145544042,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-2",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "2",
+          "seconds": 1.174179625,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "3",
+          "seconds": 0.142175333,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-3",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "3",
+          "seconds": 1.16247,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "3",
+          "seconds": 0.093342208,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-3",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-3",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-3",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "4",
+          "seconds": 1.179425,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "4",
+          "seconds": 0.092425375,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-4",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-4",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-4",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "4",
+          "seconds": 0.145245667,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-4",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "5",
+          "seconds": 0.093161584,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-5",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-5",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-5",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "5",
+          "seconds": 0.144209417,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-5",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "5",
+          "seconds": 1.147108209,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "6",
+          "seconds": 0.14386725,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-6",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "6",
+          "seconds": 1.187983708,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330,
+          "path_list_sha256": "49b6f66bb9c2ad06b0e3e968954c2637aec6bed1a137d174b84abc98a2e67750",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_full-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "6",
+          "seconds": 0.093327875,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264,
+          "path_list_sha256": "192e6659d7fec0de1ec6dd92c1bb1b860051d2e8bd1b74e577cb2923aa229370",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/envoy",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-6",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-6",
+              "stdin": "source/common/http\ntest/common/http\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/envoy@bench-git_sparse-6",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "git_full": {
+          "median_seconds": 1.1683248124999999,
+          "min_seconds": 1.14419175,
+          "max_seconds": 1.187983708,
+          "files_present": 14573,
+          "tracked_file_logical_bytes": 180192330
+        },
+        "git_sparse": {
+          "median_seconds": 0.0932061465,
+          "min_seconds": 0.092425375,
+          "max_seconds": 0.093342208,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264
+        },
+        "fwt_sparse": {
+          "median_seconds": 0.144727542,
+          "min_seconds": 0.142175333,
+          "max_seconds": 0.145684875,
+          "files_present": 570,
+          "tracked_file_logical_bytes": 10738264
+        }
+      }
+    },
+    {
+      "name": "bazel",
+      "repository": "https://github.com/bazelbuild/bazel.git",
+      "revision": "24dab1f320b42ca5f6d43c57fea4680cf4e02900",
+      "directories": [
+        "src/main/java/com/google/devtools/build/lib/skyframe",
+        "src/test/java/com/google/devtools/build/lib/skyframe"
+      ],
+      "task": "Edit or review Skyframe integration and corresponding tests",
+      "tracked_files": 13267,
+      "bazel_markers": [
+        "MODULE.bazel"
+      ],
+      "bazel_build_files": 570,
+      "warmups": [
+        {
+          "mode": "git_full",
+          "label": "warmup",
+          "seconds": 1.091804541,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "warmup",
+          "seconds": 0.1123095,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-warmup",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-warmup",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-warmup",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-warmup",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-warmup",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "warmup",
+          "seconds": 0.163793917,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-warmup",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "trials": [
+        {
+          "mode": "git_full",
+          "label": "1",
+          "seconds": 1.097348917,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "1",
+          "seconds": 0.111949,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-1",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-1",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-1",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-1",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-1",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "1",
+          "seconds": 0.162972333,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-1",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "2",
+          "seconds": 0.113640417,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-2",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-2",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-2",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "2",
+          "seconds": 0.16961625,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-2",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "2",
+          "seconds": 1.130167917,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-2",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-2",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "3",
+          "seconds": 0.161712417,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-3",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "3",
+          "seconds": 1.097510666,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "3",
+          "seconds": 0.112450667,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-3",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-3",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-3",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-3",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-3",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "4",
+          "seconds": 1.098955125,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "4",
+          "seconds": 0.11252975,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-4",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-4",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-4",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-4",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-4",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "4",
+          "seconds": 0.164486167,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-4",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "5",
+          "seconds": 0.112933666,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-5",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-5",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-5",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "5",
+          "seconds": 0.163221959,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-5",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "5",
+          "seconds": 1.093558417,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-5",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-5",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "fwt_sparse",
+          "label": "6",
+          "seconds": 0.162007166,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "/Users/junaidrahim/Code/fwt/target/release/fwt",
+                "new",
+                "bench-fwt_sparse-6",
+                "--cone",
+                "bench"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_full",
+          "label": "6",
+          "seconds": 1.097115417,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830,
+          "path_list_sha256": "901740a4829867be5b6270dd2eae728682b5040de204f6128f13503fad657832",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "-b",
+                "bench-git_full-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_full-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            }
+          ]
+        },
+        {
+          "mode": "git_sparse",
+          "label": "6",
+          "seconds": 0.11239725,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893,
+          "path_list_sha256": "98321c338c4e22c32a089f4fa07e30bfa3780439f9ac8807fb0ffaa5443ac682",
+          "verified_clean": true,
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "extensions.worktreeConfig",
+                "true"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "worktree",
+                "add",
+                "--no-checkout",
+                "-b",
+                "bench-git_sparse-6",
+                "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-6",
+                "HEAD"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/sources/bazel",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "init",
+                "--cone",
+                "--sparse-index"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-6",
+              "stdin": null
+            },
+            {
+              "argv": [
+                "git",
+                "sparse-checkout",
+                "set",
+                "--stdin"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-6",
+              "stdin": "src/main/java/com/google/devtools/build/lib/skyframe\nsrc/test/java/com/google/devtools/build/lib/skyframe\n"
+            },
+            {
+              "argv": [
+                "git",
+                "checkout"
+              ],
+              "cwd": "/private/tmp/fwt-public-bench.epicnG/worktrees/bazel@bench-git_sparse-6",
+              "stdin": null
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "git_full": {
+          "median_seconds": 1.0974297915,
+          "min_seconds": 1.093558417,
+          "max_seconds": 1.130167917,
+          "files_present": 13267,
+          "tracked_file_logical_bytes": 208472830
+        },
+        "git_sparse": {
+          "median_seconds": 0.1124902085,
+          "min_seconds": 0.111949,
+          "max_seconds": 0.113640417,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893
+        },
+        "fwt_sparse": {
+          "median_seconds": 0.163097146,
+          "min_seconds": 0.161712417,
+          "max_seconds": 0.16961625,
+          "files_present": 830,
+          "tracked_file_logical_bytes": 8984893
+        }
+      }
+    }
+  ]
+}

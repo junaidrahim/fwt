@@ -9,7 +9,7 @@ repository = "https://github.com/junaidrahim/fwt"
 readme = "README.md"
 keywords = ["git", "worktree", "sparse-checkout", "bazel", "cli"]
 categories = ["command-line-utilities", "development-tools"]
-exclude = [".github/", "docs/review.md", "docs/announcement.md", "prd.md"]
+exclude = [".github/", "benchmarks/", "scripts/", "docs/review.md", "docs/announcement.md", "prd.md"]
 
 [dependencies]
 chrono = { version = "0.4.42", features = ["serde"] }
